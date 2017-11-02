@@ -9,4 +9,12 @@
   secondHand.style.transform = `rotate(${secondDegrees}deg)`;
 ```
 
+----
+
+you access the data attributes via the dataset property
+
+----
+
+
+
 ### Bugs
