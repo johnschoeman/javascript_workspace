@@ -6,7 +6,7 @@
   <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <style>
+    <style>
     html {
       box-sizing: border-box;
       background:#ffc600;
@@ -24,6 +24,7 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -41,6 +42,10 @@
       font-size: 20px;
       background-size:cover;
       background-position:center;
+      flex: 1;
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
     }
 
 
@@ -50,10 +55,15 @@
     .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
+    /* Flex Items */
     .panel > * {
       margin:0;
       width: 100%;
       transition:transform 0.5s;
+      flex: 1 0 auto;
+      display:flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .panel p {
@@ -66,11 +76,26 @@
       font-size: 4em;
     }
 
-    .panel.open {
-      font-size:40px;
+    .panel p:first-child {
+      transform: translateY(-100%)
+    }
+    .panel.open-active p:first-child {
+      transform: translateY(0);
+    }
+    .panel p:last-child {
+      transform: translateY(100%);
+    }
+    .panel.open-active p:last-child {
+      transform: translateY(0);
+    }
+
+    .open {
+      flex: 5;
+      font-size: 40px;
     }
 
   </style>
+
 
 
   <div class="panels">
@@ -102,7 +127,22 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
 
+    function handleClick() {
+      this.classList.toggle('open')
+    }
+    function handleText(e) {
+      console.log(e.propertyName);
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active')
+      }
+    }
+
+    panels.forEach(panel => {
+      panel.addEventListener('click', handleClick);
+      panel.addEventListener('transitionend', handleText);
+      });
   </script>
 
 
