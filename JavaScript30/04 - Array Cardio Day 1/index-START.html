@@ -31,17 +31,43 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const one = inventors.filter((inventor) => inventor.year < 1600 && inventor.year >= 1500);
+    console.log(one);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+    const two = inventors.map(el => (
+      {first: el.first, last: el.last}
+    ));
+    console.log(two);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const three = inventors.sort((a,b) => {
+      if (a.year < b.year) {
+        return -1
+      }
+      return 1
+    });
+    console.log(three);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    const four = inventors.reduce((acc, el) => {
+      return acc + (parseInt(el.passed) - parseInt(el.year));
+    }, 0);
+    console.log(four);
 
     // 5. Sort the inventors by years lived
+    const five = inventors.sort((a,b) => {
+      const aYears = parseInt(a.passed) - parseInt(a.year);
+      const bYears = parseInt(b.passed) - parseInt(b.year);
+      if (aYears < bYears) {
+        return -1
+      }
+      return 1
+    });
+    console.log(five);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
@@ -49,11 +75,28 @@
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const seven = people.sort((a,b) => {
+      const aLast = a.split(", ")[1];
+      const bLast = b.split(", ")[1];
+      if (aLast < bLast) {
+        return -1
+      }
+      return 1
+    })
+    console.log(seven);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
+    const eight = data.reduce((obj, el) => {
+      if (obj[el] === undefined) {
+        obj[el] = 0;
+      }
+      ++obj[el]
+      return obj;
+    }, {})
+    console.log(eight);
   </script>
 </body>
 </html>
