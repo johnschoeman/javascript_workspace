@@ -1,5 +1,7 @@
 ### Questions
 
+what is template meta programming?
+
 ### Notes
 
 ```javascript
@@ -15,6 +17,8 @@ you access the data attributes via the dataset property
 
 ----
 
+fetch(endpoint) returns a promise
 
+----
 
 ### Bugs
