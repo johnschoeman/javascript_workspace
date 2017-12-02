@@ -7,17 +7,20 @@ const counter = (state = defaultState, action) => {
     case 'DECREMENT':
       return state - 1;
     default:
-      break;
+      return state;
   }
 }
 
 const { createStore } = Redux;
 const store = createStore(counter, 0);
 
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const render = () => {
     document.body.innerText = store.getState();
   }
+
   store.subscribe(render)
   render();
   
