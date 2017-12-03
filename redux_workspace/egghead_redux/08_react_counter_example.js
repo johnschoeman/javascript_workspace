@@ -14,11 +14,27 @@ const counterReducer = (state = defaultState, action) => {
 const { createStore } = Redux;
 const store = createStore(counterReducer, 0);
 
-const Counter = ({ value }) => (
-  React.createElement(
-    'h1',
+const e = React.createElement
+
+const Counter = ({ 
+  value,
+  onIncrement,
+  onDecrement
+ }) => (
+  e('div',
     undefined,
-    value
+    e('h1',
+      undefined,
+      value
+    ),
+    e('button',
+      {onClick: onIncrement},
+      '+'
+    ),
+    e('button',
+      {onClick: onDecrement},
+      '-'
+    )
   )
 )
 
@@ -30,7 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
     ReactDOM.render(
       React.createElement(
         Counter,
-        {value: store.getState()}
+        {
+          value: store.getState(), 
+          onIncrement: () => {
+            store.dispatch({ type: 'INCREMENT' })
+          },
+          onDecrement: () => store.dispatch({ type: 'DECREMENT' })
+        }
       ),
       document.getElementById('root')
     )
@@ -38,7 +60,5 @@ document.addEventListener('DOMContentLoaded', () => {
   
   render();
 
-  document.addEventListener('click', () => {
-    store.dispatch({type: 'INCREMENT'})
-  })
+  store.subscribe(render);
 })
