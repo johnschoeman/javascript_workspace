@@ -55,13 +55,74 @@ const todoAppReducer = combineReducers({
   visibilityFilter: visibilityFilterReducer
 });
 
-const store = createStore(todoAppReducer);
+const initialState = {
+  todos: [
+    {
+      id: 0,
+      text: 'hey',
+      completed: false
+    },
+    {
+      id: 1,
+      text: 'ho',
+      completed: false
+    },
+    {
+      id: 2,
+      text: 'let\'s go',
+      completed: false
+    }
+  ]
+}
+
+const store = createStore(todoAppReducer, initialState);
+
+window.store = store;
+
+const FilterLink = ({
+  filter,
+  currentFilter,
+  children
+}) => {
+  if (filter === currentFilter) {
+    return <span>{children}</span>;
+  }
+  return (
+    <a 
+      href="#"
+      onClick={(e) => {
+        e.preventDefault();
+        store.dispatch({
+          type: 'SET_VISIBILITY_FILTER',
+          filter
+        })
+      }} >
+      {children}
+    </a>
+  )
+}
+
+const getVisibleTodos = (
+  filter,
+  todos
+) => {
+  console.log(filter, todos)
+  switch (filter) {
+    case 'SHOW_ALL':
+      return todos;
+    case 'SHOW_ACTIVE':
+      return todos.filter(todo => !todo.completed);
+    case 'SHOW_COMPLETED':
+      return todos.filter(todo => todo.completed)
+  }
+}
 
 let nextId = 0;
-
 class TodoApp extends Component {
   render() {
-    console.log(this.props)
+    console.log(this.props);
+    const { todos, visibilityFilter } = this.props
+    const visibleTodos = getVisibleTodos(visibilityFilter, todos)
     return (
       <div>
         <input ref={node => {
@@ -78,23 +139,44 @@ class TodoApp extends Component {
         Add Todo
         </button>
         <ul>
-          {this.props.todos.map((todo) => (
+          {visibleTodos.map((todo) => (
             <li 
-              key={todo.id}
-              onClick={() => {
-                store.dispatch({
-                  type: 'TOGGLE_TODO',
-                  id: todo.id
-                })
-              }}
-              style={{
-                textDecoration: todo.completed ? 'line-through' : 'none'
-                }
-              }>
+            key={todo.id}
+            onClick={() => {
+              store.dispatch({
+                type: 'TOGGLE_TODO',
+                id: todo.id
+              })
+            }}
+            style={{
+              textDecoration: todo.completed ? 'line-through' : 'none'
+            }
+          }>
               {todo.text}
             </li>
           ))}
         </ul>
+        <p>
+          Show:
+          {' '}
+          <FilterLink 
+            filter='SHOW_ALL'
+            currentFilter={visibilityFilter}>
+            All
+          </FilterLink>
+          {' '}
+          <FilterLink 
+            filter='SHOW_ACTIVE' 
+            currentFilter={visibilityFilter}>
+            Active
+          </FilterLink>
+          {' '}
+          <FilterLink 
+            filter='SHOW_COMPLETED'
+            currentFilter={visibilityFilter}>
+            Completed
+          </FilterLink>
+        </p>
       </div>
     )
   }
@@ -102,7 +184,7 @@ class TodoApp extends Component {
 
 const render = () => {
   ReactDOM.render(
-    <TodoApp todos={store.getState().todos}/>,
+    <TodoApp {...store.getState()}/>,
     document.getElementById('root')
   )
 };
