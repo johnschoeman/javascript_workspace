@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-  entry: './17_react_todo_list_example',
+  entry: './20_extracting_presentational_components.js',
   output: {
     filename: './bundle.js',
   },
