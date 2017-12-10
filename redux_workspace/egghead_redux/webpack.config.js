@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-  entry: './27_generating_containers_with_connect.js',
+  entry: './30_extracting_action_creators.js',
   output: {
     filename: './bundle.js',
   },

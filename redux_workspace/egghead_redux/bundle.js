@@ -1944,6 +1944,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+var setVisibilityFilter = function setVisibilityFilter(filter) {
+  return {
+    type: 'SET_VISIBILITY_FILTER',
+    filter: filter
+  };
+};
+
+var nextId = 0;
+var addTodo = function addTodo(text) {
+  return {
+    type: 'ADD_TODO',
+    text: text,
+    id: nextId++
+  };
+};
+
+var toggleTodo = function toggleTodo(id) {
+  return {
+    type: 'TOGGLE_TODO',
+    id: id
+  };
+};
+
 var todoReducer = function todoReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
@@ -2056,10 +2079,7 @@ var mapStateToTodoListProps = function mapStateToTodoListProps(state) {
 var mapDispatchToTodoListProps = function mapDispatchToTodoListProps(dispatch) {
   return {
     onTodoClick: function onTodoClick(id) {
-      dispatch({
-        type: 'TOGGLE_TODO',
-        id: id
-      });
+      dispatch(toggleTodo(id));
     }
   };
 };
@@ -2078,11 +2098,7 @@ var AddTodo = function AddTodo(_ref3) {
     _react2.default.createElement(
       'button',
       { onClick: function onClick() {
-          dispatch({
-            type: 'ADD_TODO',
-            text: input.value,
-            id: nextId++
-          });
+          dispatch(addTodo(input.value));
           input.value = '';
         } },
       'Add Todo'
@@ -2123,10 +2139,7 @@ var mapStateToLinkProps = function mapStateToLinkProps(state, ownProps) {
 var mapDispatchToLinkProps = function mapDispatchToLinkProps(dispatch, ownProps) {
   return {
     onClick: function onClick() {
-      dispatch({
-        type: 'SET_VISIBILITY_FILTER',
-        filter: ownProps.filter
-      });
+      return dispatch(setVisibilityFilter(ownProps.filter));
     }
   };
 };
@@ -2164,7 +2177,6 @@ var Footer = function Footer() {
   );
 };
 
-var nextId = 0;
 var TodoApp = function TodoApp() {
   return _react2.default.createElement(
     'div',
