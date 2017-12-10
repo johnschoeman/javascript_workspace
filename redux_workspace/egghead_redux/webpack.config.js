@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-  entry: './25_passing_store_down_implicitly_via_context.js',
+  entry: './27_generating_containers_with_connect.js',
   output: {
     filename: './bundle.js',
   },
