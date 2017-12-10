@@ -127,15 +127,46 @@ const TodoList = ({
   )
 }
 
-const AddTodo = ({
-  onAddClick
-}) => {
+class VisibileTodoList extends Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => 
+      this.forceUpdate()
+    );
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
+  render() {
+    const props = this.props
+    const state = store.getState();
+
+    return (
+      <TodoList 
+        todos={getVisibleTodos(state.visibilityFilter, state.todos)}
+        onTodoClick={(id) => {
+          store.dispatch({
+            type: 'TOGGLE_TODO',
+            id
+          })
+        }}
+      />
+    )
+  }
+}
+
+const AddTodo = () => {
   let input;
   return (
     <div>
       <input ref={node => { input = node }}/>
-      <button onClick={() => {
-        onAddClick(input.value)
+      <button onClick={(input) => {
+        store.dispatch({
+          type: 'ADD_TODO',
+          text: input.value,
+          id: nextId++
+        })
         input.value = ''; 
         }}>
       Add Todo
@@ -174,6 +205,7 @@ class FilterLink extends Component {
   componentWillUnmount() {
     this.unsubscribe();
   }
+
   render() {
     const props = this.props;
     const state = store.getState();
@@ -219,41 +251,18 @@ const Footer = () => (
 );
 
 let nextId = 0;
-const TodoApp = ({
-  todos, visibilityFilter
-}) => (
+const TodoApp = () => (
   <div>
-    <AddTodo 
-      onAddClick={(text) => {
-        store.dispatch({
-          type: 'ADD_TODO',
-          text,
-          id: nextId++
-        })
-      }}
-    />
-    <TodoList
-      todos={getVisibleTodos(visibilityFilter, todos)}
-      onTodoClick={(id) => {
-        store.dispatch({
-          type: 'TOGGLE_TODO',
-          id
-        })
-      }}
-    />
+    <AddTodo />
+    <VisibileTodoList/>
     <Footer />
   </div>
 )
 
 
-const render = () => {
+document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <TodoApp {...store.getState()}/>,
+    <TodoApp />,
     document.getElementById('root')
   )
-};
-
-store.subscribe(render);
-document.addEventListener('DOMContentLoaded', () => {
-  render();
 })
