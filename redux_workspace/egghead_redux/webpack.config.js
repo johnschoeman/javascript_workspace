@@ -1,7 +1,7 @@
 var path = require('path');
 
 module.exports = {
-  entry: './22_extracting_container_components.js',
+  entry: './23_passing_store_down_explicity.js',
   output: {
     filename: './bundle.js',
   },
