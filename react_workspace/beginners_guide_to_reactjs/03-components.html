@@ -1,0 +1,23 @@
+<div id="root" />
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+<script type="text/babel">
+  const rootElement = document.getElementById('root');
+  const message = (props) => <div>{props.msg}</div>
+  const Message = (props) => <div>{props.msg}</div>
+  const BetterMessage = (props) => <div>{props.children}</div>
+  const element = (
+    <div className="container">
+      {message({ msg: 'goodbye world' })}
+      {React.createElement(message, { msg: 'hello world' })}
+      <Message msg="one more time"/>
+      <BetterMessage>
+        one last time
+        <BetterMessage>nested</BetterMessage>
+      </BetterMessage>
+    </div>
+  )
+  console.log(element);
+  ReactDOM.render(element, rootElement);
+</script>
