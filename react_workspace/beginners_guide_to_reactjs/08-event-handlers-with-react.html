@@ -4,8 +4,53 @@
   <script src="https://unpkg.com/prop-types@15.6.0/prop-types.js"></script>
   <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
   
-  <div id="root"></div>
+  <div id="root">Hello!</div>
     
   <script type="text/babel">
+    const state = {eventCount: 0, username: ''}
+    
+    function App() {
+      return (
+        <div>
+          <p>
+            There have been {state.eventCount} events
+          </p>
+          <p>
+            <button onMouseOver={increment}>Press</button>
+          </p>
+          <p>
+             You typed: {state.username}
+          </p>
+          <p>
+            <input onChange={updateUsername}/>
+          </p>
+        </div>
+      )
+    }
+
+    function increment() {
+      setState({eventCount: state.eventCount + 1})
+    }
+
+    function updateUsername(event) {
+      console.log(event)
+      console.log(event.nativeEvent)
+      setState({username: event.target.value})
+    }
+
+    function setState(newState) {
+      Object.assign(state, newState);
+      renderApp();
+    }
+
+    window.setState = setState;
+
+    function renderApp() {
+      ReactDOM.render(
+        <App />,
+        document.getElementById('root'),
+      )
+    }
+    renderApp()
   </script>
 </body>
